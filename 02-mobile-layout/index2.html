@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+
+  <script>
+    tailwind.config = {
+      theme: {
+        fontFamily: {
+          'outfit': ['Outfit', 'sans-serif'],
+        },
+        extend: {
+          colors: {
+            clifford: 'hsl(218, 44%, 22%)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    [v-cloak] {
+      display: none;
+    }
+
+    .column {
+      transition: all 0.3s ease;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" class="bg-blue-100 relative min-h-screen w-full flex flex-col" v-cloak>
+    <section ref="map" class="flex-grow relative" id="map">
+      <button @click="setCurrentPosition"
+        class="absolute bg-zinc-100 active:bg-zinc-400 duration-200 rounded-full bottom-0 right-0 px-3 py-2 my-10 shadow-xl border-blue-300 mx-4"
+        style="z-index: 500;"><i class="fa-solid fa-location-crosshairs text-blue-800 text-2xl"></i></button>
+    </section>
+    <section v-if="!hidePanel"
+      class="bg-blue-400 h-[50vm] flex-col  items-center p-2 overflow-auto column">
+      <p class="mr-2">uno</p>
+      <p class="mr-2">uno</p>
+      <p class="mr-2">uno</p>
+      <p class="mr-2">uno</p>
+      <p class="mr-2">uno</p>
+      <p class="mr-2">uno</p>
+      <p class="mr-2">uno</p>
+      <p class="mr-2">uno</p>
+      <p class="mr-2">uno</p>
+      <p class="mr-2">uno</p>
+      <p class="mr-2">uno</p>
+      <p class="mr-2">uno</p>
+      <p class="mr-2">dos</p>
+
+    </section>
+    <section class="bg-blue-300 h-[70px] flex justify-between items-center p-2">
+      <button @click="togglePanel"
+        class="bg-blue-300 px-4 w-1/4 py-2 duration-200 flex-col justify-center items-center">
+        <i class="fas fa-heart"></i>
+        <p class="text-xs">uno</p>
+      </button>
+      <button class="bg-blue-300 px-4 w-1/4 py-2 duration-200 flex-col justify-center items-center">
+        <i class="fas fa-heart"></i>
+        <p class="text-xs">uno</p>
+      </button>
+      <button class="bg-blue-300 px-4 w-1/4 py-2 duration-200 flex-col justify-center items-center">
+        <i class="fas fa-heart"></i>
+        <p class="text-xs">uno</p>
+      </button>
+      <button class="bg-blue-300 px-4 w-1/4 py-2 duration-200 flex-col justify-center items-center">
+        <i class="fas fa-heart"></i>
+        <p class="text-xs">uno</p>
+      </button>
+    </section>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+  <script>
+    var map = null;
+
+    // L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    //   attribution: "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors",
+    // }).addTo(map);
+
+    const { createApp } = Vue
+
+    createApp({
+      data() {
+        return {
+          message: 'Hello Vue!',
+          hidePanel: true
+        }
+      },
+      methods: {
+        setCurrentPosition() {
+          navigator.geolocation.getCurrentPosition(function (position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            map.setView([lat, lon], 18); // Cambia el nivel de zoom según tus necesidades
+            map.invalidateSize();
+          });
+        },
+        togglePanel() {
+          this.hidePanel = !this.hidePanel
+          map.invalidateSize();
+        }
+      },
+      mounted() {
+        // Inicializa el mapa de Leaflet dentro del evento "mounted"
+        map = L.map("map").setView([51.505, -0.09], 13);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          // attribution: "",
+        }).addTo(map);
+      }
+    }).mount('#app')
+
+
+  </script>
+</body>
+
+</html>
