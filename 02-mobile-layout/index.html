@@ -3,25 +3,17 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
   <title>Document</title>
   <link rel="manifest" href="/manifest.json">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
-
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-
-
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
-
-
-
-
-
 
   <script>
     tailwind.config = {
@@ -46,131 +38,97 @@
 </head>
 
 <body class="bg-gray-400">
-  <div id="app" v-cloak>
-    <div v-show="showModal" class="fixed inset-0 overflow-auto bg-black bg-opacity-50" style="z-index: 600;">
-      <div class="modal-content relative w-full mx-auto my-10 p-6 bg-white rounded-lg shadow-lg">
-        <h2 class="text-2xl font-semibold mb-4">Título de la Modal</h2>
-        <div class="overflow-auto">
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-          <p>Contenido de la modal...</p>
-
-        </div>
-
-        <button @click="closeModal()" class="absolute top-0 right-0 p-6 text-lg"><i
-            class="fas fa-xmark text-2xl"></i></button>
-      </div>
-    </div>
-    <div v-show="!showModal" class="bg-gray-100 relative min-h-screen w-full flex flex-col md:max-w-xl md:mx-auto">
-      <section ref="map" class="flex-grow relative" id="map">
-        <button @click="setCurrentPosition"
-          class="absolute bg-zinc-100 active:bg-zinc-400 rounded-full bottom-0 right-0 px-3 py-2 shadow-xl  mx-4 mb-10"
-          style="z-index: 500;"><i class="fa-solid fa-location-crosshairs text-blue-800 text-2xl"></i>
-        </button>
-        <!-- <button @click="reloadPage"
-          class="absolute bg-zinc-100 active:bg-zinc-400 rounded-full bottom-0 right-0 px-3 py-2 shadow-xl border-blue-300 mx-4"
-          style="z-index: 500; bottom: 120px;"><i class="fa-solid fa-arrows-rotate text-blue-800 text-2xl"></i>
-        </button> -->
-      </section>
-      <section id="pendientes"
-        class="bg-gray-100 shadow-3xl rounded-t-md border-t-4 border-gray-300 flex-col items-center overflow-y-auto transition-all ease-in-out duration-300 h-0"
-        :class="{'h-[400px]': currentScreen == screens.PENDING}">
-        <div ref="panelTitle" class="relative w-full mx-auto p-6 bg-white rounded-lg shadow-lg">
-          <h2  class="text-2xl font-semibold mb-4">Título del panel</h2>
+  <div id="app">
+    <div v-cloak>
+      <div v-show="showModal" class="fixed inset-0 overflow-auto bg-black bg-opacity-50" style="z-index: 600;">
+        <div class="modal-content relative w-full mx-auto my-10 p-6 bg-white rounded-lg shadow-lg">
+          <h2 class="text-2xl font-semibold mb-4">Título de la Modal</h2>
           <div class="overflow-auto">
             <p>Contenido de la modal...</p>
             <p>Contenido de la modal...</p>
-            <p>Contenido de la modal...</p>
-            <p>Contenido de la modal...</p>
-            <p>Contenido de la modal...</p>
-            <p>Contenido de la modal...</p>
-            <p>Contenido de la modal...</p>
-            <p>Contenido de la modal...</p>
-            <p>Contenido de la modal...</p>
-            <p>Contenido de la modal...</p>
-            <p>Contenido de la modal...</p>
-            <p>Contenido de la modal...</p>
-            <p>Contenido de la modal...</p>
-            <p>Contenido de la modal...</p>
-            <p>Contenido de la modal...</p>
-            <p>Contenido de la modal...</p>
-            <p>Contenido de la modal...</p>
-            <p>Contenido de la modal...</p>
-            <p>Contenido de la modal...</p>
-            <p>Contenido de la modal...</p>
           </div>
-          <button @click="closeModal" class="absolute top-0 right-0 m-6 text-lg">
+          <button @click="closeModal()" class="absolute top-0 right-0 p-6 text-lg">
             <i class="fas fa-xmark text-2xl"></i>
           </button>
         </div>
-      </section>
-      <section class="bg-gray-50 h-[70px] flex justify-between items-center p-4">
-        <a @click="setCurrentScreen(screens.PENDING)"
-          class="py-2 flex-col justify-between text-center rounded-xl hover:cursor-pointer relative">
-          <i class="fas fa-bell text-xl px-5 mb-1 rounded-full"
-            :class="{' text-blue-900 bg-blue-200': currentScreen === screens.PENDING}"></i>
-          <span class="absolute top-1 right-4 bg-red-500 text-white rounded-full px-1 text-xs">2</span>
-          <p class="text-xs select-none" :class="{' text-blue-900 font-bold': currentScreen === screens.PENDING}">
-            Pendientes</p>
-        </a>
-        <a @click="setCurrentScreen(screens.HISTORY)"
-          class="py-2 flex-col justify-center items-center rounded-xl hover:cursor-pointer">
+      </div>
+      
+      <div v-show="!showModal" class="bg-gray-100 relative min-h-screen w-full flex flex-col md:max-w-xl md:mx-auto">
+        <section ref="map" class="flex-grow relative" id="map">
+          <button @click="setCurrentPosition"
+            class="absolute bg-zinc-100 active:bg-zinc-400 rounded-full bottom-0 right-0 px-3 py-2 shadow-xl  mx-4 mb-10"
+            style="z-index: 500;"><i class="fa-solid fa-location-crosshairs text-blue-800 text-2xl"></i>
+          </button>
+          <button @click="reloadPage"
+            class="absolute bg-zinc-100 active:bg-zinc-400 rounded-full bottom-0 right-0 px-3 py-2 shadow-xl border-blue-300 mx-4"
+            style="z-index: 500; bottom: 120px;"><i class="fa-solid fa-arrows-rotate text-blue-800 text-2xl"></i>
+          </button>
+        </section>
+        <section id="pendientes"
+          class="bg-gray-100 shadow-3xl rounded-t-md border-t-4 border-gray-300 flex-col items-center overflow-y-auto transition-all ease-in-out duration-300 h-0"
+          :class="{'h-[400px]': currentScreen == screens.PENDING}">
+          <div ref="panelTitle" class="relative w-full mx-auto p-6 bg-white rounded-lg shadow-lg">
+            <h2 class="text-2xl font-semibold mb-4">Título del panel</h2>
+            <div class="overflow-auto">
+              <p>Contenido del panel ...</p>
+              <p>Contenido del panel ...</p>              
+              <p>Contenido del panel ...</p>              
+              <p>Contenido del panel ...</p>              
+              <p>Contenido del panel ...</p>              
+              <p>Contenido del panel ...</p>              
+              <p>Contenido del panel ...</p>              
+              <p>Contenido del panel ...</p>              
+              <p>Contenido del panel ...</p>              
+              <p>Contenido del panel ...</p>              
+              <p>Contenido del panel ...</p>              
+              <p>Contenido del panel ...</p>              
+              <p>Contenido del panel ...</p>              
+              <p>Contenido del panel ...</p>              
+              <p>Contenido del panel ...</p>              
+              <p>Contenido del panel ...</p>              
+            </div>
+            <button @click="closeModal" class="absolute top-0 right-0 m-6 text-lg">
+              <i class="fas fa-xmark text-2xl"></i>
+            </button>
+          </div>
+        </section>
+        <section class="bg-gray-50 h-[70px] flex justify-between items-center p-4">
+          <a @click="setCurrentScreen(screens.PENDING)"
+            class="py-2 flex-col justify-between text-center rounded-xl hover:cursor-pointer relative">
+            <i class="fas fa-bell text-xl px-5 mb-1 rounded-full"
+              :class="{' text-blue-900 bg-blue-200': currentScreen === screens.PENDING}"></i>
+            <span class="absolute top-1 right-4 bg-red-500 text-white rounded-full px-1 text-xs">2</span>
+            <p class="text-xs select-none" :class="{' text-blue-900 font-bold': currentScreen === screens.PENDING}">
+              Pendientes</p>
+          </a>
+          <a @click="setCurrentScreen(screens.HISTORY)"
+            class="py-2 flex-col justify-center items-center rounded-xl hover:cursor-pointer">
 
-          <i class="fa-regular fa-bookmark text-xl px-5 mb-1 rounded-full text-center"
-            :class="{' text-blue-900 bg-blue-200': currentScreen === screens.HISTORY}"></i>
-          <p class="text-xs select-none text-center"
-            :class="{' text-blue-900 font-bold': currentScreen === screens.HISTORY}">
-            Histórico</p>
-        </a>
-        <a class="py-2 flex-col justify-center items-center rounded-xl hover:cursor-pointer"
-          @click="setCurrentScreen(screens.CREATE_SIGNAL)">
-          <i class="fa-regular fa-square-plus text-xl px-5 mb-1 rounded-full text-center"
-            :class="{' text-blue-900 bg-blue-200': currentScreen === screens.CREATE_SIGNAL}"></i>
-          <p class="text-xs text-center select-none"
-            :class="{' text-blue-900 font-bold': currentScreen === screens.CREATE_SIGNAL}">Señal</p>
-        </a>
-        <a class="py-2 flex-col justify-center items-center rounded-xl hover:cursor-pointer"
-          @click="setCurrentScreen(screens.EXIT)">
-          <i class="fas fa-xmark text-xl px-5 mb-1 rounded-full text-center"
-            :class="{' text-blue-900 bg-blue-200': currentScreen === screens.EXIT}"></i>
-          <p class="text-xs select-none text-center"
-            :class="{' text-blue-900 font-bold': currentScreen === screens.EXIT}">Salir
-          </p>
-        </a>
-      </section>
+            <i class="fa-regular fa-bookmark text-xl px-5 mb-1 rounded-full text-center"
+              :class="{' text-blue-900 bg-blue-200': currentScreen === screens.HISTORY}"></i>
+            <p class="text-xs select-none text-center"
+              :class="{' text-blue-900 font-bold': currentScreen === screens.HISTORY}">
+              Histórico</p>
+          </a>
+          <a class="py-2 flex-col justify-center items-center rounded-xl hover:cursor-pointer"
+            @click="setCurrentScreen(screens.CREATE_SIGNAL)">
+            <i class="fa-regular fa-square-plus text-xl px-5 mb-1 rounded-full text-center"
+              :class="{' text-blue-900 bg-blue-200': currentScreen === screens.CREATE_SIGNAL}"></i>
+            <p class="text-xs text-center select-none"
+              :class="{' text-blue-900 font-bold': currentScreen === screens.CREATE_SIGNAL}">Señal</p>
+          </a>
+          <a class="py-2 flex-col justify-center items-center rounded-xl hover:cursor-pointer"
+            @click="setCurrentScreen(screens.EXIT)">
+            <i class="fas fa-xmark text-xl px-5 mb-1 rounded-full text-center"
+              :class="{' text-blue-900 bg-blue-200': currentScreen === screens.EXIT}"></i>
+            <p class="text-xs select-none text-center"
+              :class="{' text-blue-900 font-bold': currentScreen === screens.EXIT}">Salir
+            </p>
+          </a>
+        </section>
+      </div>
     </div>
+
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.all.min.js"></script>
