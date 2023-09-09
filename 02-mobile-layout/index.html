@@ -45,7 +45,7 @@
   </style>
 </head>
 
-<body>
+<body class="bg-gray-400">
   <div id="app" v-cloak>
     <div v-show="showModal" class="fixed inset-0 overflow-auto bg-black bg-opacity-50" style="z-index: 600;">
       <div class="modal-content relative w-full mx-auto my-10 p-6 bg-white rounded-lg shadow-lg">
@@ -94,7 +94,7 @@
             class="fas fa-xmark text-2xl"></i></button>
       </div>
     </div>
-    <div v-show="!showModal" class="bg-blue-100 relative min-h-screen w-full flex flex-col">
+    <div v-show="!showModal" class="bg-blue-100 relative min-h-screen w-full flex flex-col md:max-w-xl md:mx-auto">
       <section ref="map" class="flex-grow relative" id="map">
         <button @click="setCurrentPosition"
           class="absolute bg-zinc-100 active:bg-zinc-400 duration-200 rounded-full bottom-0 right-0 px-3 py-2 shadow-xl border-blue-300 mx-4 mb-10"
@@ -105,7 +105,8 @@
           style="z-index: 500; bottom: 120px;"><i class="fa-solid fa-arrows-rotate text-blue-800 text-2xl"></i>
         </button> -->
       </section>
-      <section v-show="!hidePanel" class="bg-gray-100 rounded-t-2xl h-[300px] flex-col  items-center p-2 overflow-scroll">
+      <section v-show="currentScreen == screens.PENDING"
+        class="bg-gray-100 rounded-t-2xl h-[300px] flex-col  items-center p-2 overflow-scroll">
         <p class="mr-2">uno</p>
         <p class="mr-2">dos</p>
         <p class="mr-2">dos</p>
@@ -131,25 +132,39 @@
 
       </section>
       <section class="bg-gray-50 h-[70px] flex justify-between items-center p-4">
-        <button @click="togglePanel"
-          class="px-4 w-1/4 py-2 flex-col justify-between items-center rounded-xl">
-          <i class="fas fa-bell text-xl text-blue-900 bg-blue-200 px-5 mb-1 rounded-full"></i>
-          <p class="text-xs font-bold text-blue-900">Pendientes</p>
-        </button>
-        <button class="px-4 w-1/4 py-2 flex-col justify-between items-center rounded-xl"
-          @click="showModal=!showModal">
-          <i class="fa-regular fa-bookmark text-xl px-5 mb-1 rounded-full"></i>
-          <p class="text-xs">Histórico</p>
-        </button>
-        <button class="px-4 w-1/4 py-2 flex-col justify-between items-center rounded-xl">
-          <i class="fa-regular fa-square-plus text-xl px-5 mb-1 rounded-full"></i>
-          <p class="text-xs">Señal</p>
-        </button>
-        <button class="px-4 w-1/4 py-2 flex-col justify-between items-center rounded-xl"
-          @click="exit">
-          <i class="fas fa-xmark text-xl px-5 mb-1 rounded-full"></i>
-          <p class="text-xs">Salir</p>
-        </button>
+        <!-- <button @click="togglePanel" -->
+        <a @click="setCurrentScreen(screens.PENDING)"
+          class="py-2 flex-col justify-between text-center rounded-xl hover:cursor-pointer">
+          <i class="fas fa-bell text-xl px-5 mb-1 rounded-full animate-bounce"
+            :class="{' text-blue-900 bg-blue-200': currentScreen === screens.PENDING}"></i>
+          <p class="text-xs select-none" :class="{' text-blue-900 font-bold': currentScreen === screens.PENDING}">
+            Pendientes</p>
+        </a>
+        <!-- <button  @click="showModal=!showModal" -->
+        <a @click="setCurrentScreen(screens.HISTORY)"
+          class="py-2 flex-col justify-center items-center rounded-xl hover:cursor-pointer">
+
+          <i class="fa-regular fa-bookmark text-xl px-5 mb-1 rounded-full text-center"
+            :class="{' text-blue-900 bg-blue-200': currentScreen === screens.HISTORY}"></i>
+          <p class="text-xs select-none text-center"
+            :class="{' text-blue-900 font-bold': currentScreen === screens.HISTORY}">
+            Histórico</p>
+        </a>
+        <a class="py-2 flex-col justify-center items-center rounded-xl hover:cursor-pointer"
+          @click="setCurrentScreen(screens.CREATE_SIGNAL)">
+          <i class="fa-regular fa-square-plus text-xl px-5 mb-1 rounded-full text-center"
+            :class="{' text-blue-900 bg-blue-200': currentScreen === screens.CREATE_SIGNAL}"></i>
+          <p class="text-xs text-center select-none"
+            :class="{' text-blue-900 font-bold': currentScreen === screens.CREATE_SIGNAL}">Señal</p>
+        </a>
+        <a class="py-2 flex-col justify-center items-center rounded-xl hover:cursor-pointer"
+          @click="setCurrentScreen(screens.EXIT)">
+          <i class="fas fa-xmark text-xl px-5 mb-1 rounded-full text-center"
+            :class="{' text-blue-900 bg-blue-200': currentScreen === screens.EXIT}"></i>
+          <p class="text-xs select-none text-center"
+            :class="{' text-blue-900 font-bold': currentScreen === screens.EXIT}">Salir
+          </p>
+        </a>
       </section>
 
 
@@ -195,14 +210,44 @@
           message: 'Hello Vue!',
           hidePanel: true,
           showModal: false,
+          screens: {
+            PENDING: 'pending',
+            HISTORY: 'history',
+            CREATE_SIGNAL: 'create_signal',
+            EXIT: 'exit'
+          },
+          currentScreen: null,
         }
       },
       watch: {
-        showModal(newvalue, oldvalue) {
-          // this.refreshMap()
+        // showModal(newvalue, oldvalue) {
+        //   // this.refreshMap()
+        // }
+        currentScreen(newvalue, oldvalue) {
+
+          setTimeout(() => {
+            map.invalidateSize();
+          }, 500)
+
+          if (newvalue == this.screens.PENDING) {
+            // this.togglePanel()
+          }
+          else if (newvalue == this.screens.EXIT) {
+            this.exit()
+          }
+
+
+
         }
       },
       methods: {
+        setCurrentScreen(screen) {
+          if (this.currentScreen == screen) {
+            this.currentScreen = null;
+            return;
+          }
+          this.currentScreen = screen
+        },
         setCurrentPosition() {
           navigator.geolocation.getCurrentPosition(function (position) {
             const lat = position.coords.latitude;
@@ -218,13 +263,13 @@
           window.location.reload();
         },
         togglePanel() {
-          this.hidePanel = !this.hidePanel
+          // this.hidePanel = !this.hidePanel
 
-          if (this.hidePanel) {
-            setTimeout(() => {
-              map.invalidateSize();
-            }, 500)
-          }
+          // if (this.hidePanel) {
+          //   setTimeout(() => {
+          //     map.invalidateSize();
+          //   }, 500)
+          // }
 
         },
         exit() {
@@ -238,8 +283,13 @@
             cancelButtonText: 'Cancelar',
           }).then(r => {
             if (r.isConfirmed) {
+              map.invalidateSize();  // quitar 
               console.log('salir')
+            } else {
+              map.invalidateSize();
+              console.log('me quedo')
             }
+            this.currentScreen = null
           })
         }
       },
