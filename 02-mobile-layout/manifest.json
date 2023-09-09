@@ -2,7 +2,7 @@
   "name": "Mi Aplicación PWA",
   "short_name": "Mi PWA",
   "description": "Una descripción de tu PWA",
-  "start_url": "/index2.html",
+  "start_url": "/index.html",
   "display": "fullscreen",
   "orientation": "portrait",
   "background_color": "#ffffff",

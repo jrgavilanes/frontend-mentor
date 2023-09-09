@@ -2,27 +2,264 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="output.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
+
+
+
+
+
+
+  <script>
+    tailwind.config = {
+      theme: {
+        fontFamily: {
+          'outfit': ['Outfit', 'sans-serif'],
+        },
+        extend: {
+          colors: {
+            clifford: 'hsl(218, 44%, 22%)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    [v-cloak] {
+      display: none;
+    }
+  </style>
 </head>
 
 <body>
-<div class="bg-blue-100 h-screen w-full flex items-center justify-center">
-    <section class="bg-white flex flex-col items-center justify-center rounded-2xl p-4">
-        <img class="rounded-xl" width="300px" src="img/image-qr-code.png" alt="">
-        <p class="mt-4 w-[300px] text-center font-bold font-outfit text-xl">
-            Mejora tus habilidades frontend haciendo proyectos!
-        </p>
-        <p class="mt-4 w-[300px] text-gray-400 text-center font-outfit text-xs">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint, ab corrupti asperiores soluta itaque et earum saepe quod necessitatibus hic!
-        </p>
-    </section>
-</div>
+  <div id="app" v-cloak>
+    <div v-show="showModal" class="fixed inset-0 overflow-auto bg-black bg-opacity-50" style="z-index: 600;">
+      <div class="modal-content relative w-full mx-auto my-10 p-6 bg-white rounded-lg shadow-lg">
+        <!-- Contenido de la modal -->
+        <h2 class="text-2xl font-semibold mb-4">Título de la Modal</h2>
+        <div class="overflow-auto">
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+          <p>Contenido de la modal...</p>
+
+        </div>
+
+        <button @click="showModal=false" class="absolute top-0 right-0 p-4 text-lg"><i
+            class="fas fa-xmark text-2xl"></i></button>
+      </div>
+    </div>
+    <div v-show="!showModal" class="bg-blue-100 relative min-h-screen w-full flex flex-col">
+      <section ref="map" class="flex-grow relative" id="map">
+        <button @click="setCurrentPosition"
+          class="absolute bg-zinc-100 active:bg-zinc-400 duration-200 rounded-full bottom-0 right-0 px-3 py-2 shadow-xl border-blue-300 mx-4 mb-10"
+          style="z-index: 500;"><i class="fa-solid fa-location-crosshairs text-blue-800 text-2xl"></i>
+        </button>
+        <!-- <button @click="reloadPage"
+          class="absolute bg-zinc-100 active:bg-zinc-400 duration-200 rounded-full bottom-0 right-0 px-3 py-2 shadow-xl border-blue-300 mx-4"
+          style="z-index: 500; bottom: 120px;"><i class="fa-solid fa-arrows-rotate text-blue-800 text-2xl"></i>
+        </button> -->
+      </section>
+      <section v-show="!hidePanel" class="bg-gray-100 rounded-t-2xl h-[300px] flex-col  items-center p-2 overflow-scroll">
+        <p class="mr-2">uno</p>
+        <p class="mr-2">dos</p>
+        <p class="mr-2">dos</p>
+        <p class="mr-2">dos</p>
+        <p class="mr-2">dos</p>
+        <p class="mr-2">uno</p>
+        <p class="mr-2">uno</p>
+        <p class="mr-2">dos</p>
+        <p class="mr-2">dos</p>
+        <p class="mr-2">dos</p>
+        <p class="mr-2">dos</p>
+        <p class="mr-2">uno</p>
+        <p class="mr-2">dos</p>
+        <p class="mr-2">dos</p>
+        <p class="mr-2">dos</p>
+        <p class="mr-2">dos</p>
+        <p class="mr-2">uno</p>
+        <p class="mr-2">uno</p>
+        <p class="mr-2">dos</p>
+        <p class="mr-2">dos</p>
+        <p class="mr-2">dos</p>
+        <p class="mr-2">dos</p>
+
+      </section>
+      <section class="bg-gray-50 h-[70px] flex justify-between items-center p-4">
+        <button @click="togglePanel"
+          class="px-4 w-1/4 py-2 flex-col justify-between items-center rounded-xl">
+          <i class="fas fa-bell text-xl text-blue-900 bg-blue-200 px-5 mb-1 rounded-full"></i>
+          <p class="text-xs font-bold text-blue-900">Pendientes</p>
+        </button>
+        <button class="px-4 w-1/4 py-2 flex-col justify-between items-center rounded-xl"
+          @click="showModal=!showModal">
+          <i class="fa-regular fa-bookmark text-xl px-5 mb-1 rounded-full"></i>
+          <p class="text-xs">Histórico</p>
+        </button>
+        <button class="px-4 w-1/4 py-2 flex-col justify-between items-center rounded-xl">
+          <i class="fa-regular fa-square-plus text-xl px-5 mb-1 rounded-full"></i>
+          <p class="text-xs">Señal</p>
+        </button>
+        <button class="px-4 w-1/4 py-2 flex-col justify-between items-center rounded-xl"
+          @click="exit">
+          <i class="fas fa-xmark text-xl px-5 mb-1 rounded-full"></i>
+          <p class="text-xs">Salir</p>
+        </button>
+      </section>
+
+
+
+
+    </div>
+
+
+
+
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.all.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+  <script>
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js') // Ruta al Service Worker
+        .then(function (registration) {
+          console.log('Service Worker registrado con éxito:', registration);
+        })
+        .catch(function (error) {
+          console.log('Error al registrar el Service Worker:', error);
+        });
+    }
+
+
+
+    var map = null;
+
+    // L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    //   attribution: "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors",
+    // }).addTo(map);
+
+    const { createApp } = Vue
+
+    createApp({
+      data() {
+        return {
+          message: 'Hello Vue!',
+          hidePanel: true,
+          showModal: false,
+        }
+      },
+      watch: {
+        showModal(newvalue, oldvalue) {
+          // this.refreshMap()
+        }
+      },
+      methods: {
+        setCurrentPosition() {
+          navigator.geolocation.getCurrentPosition(function (position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            map.setView([lat, lon], 18); // Cambia el nivel de zoom según tus necesidades
+            map.invalidateSize();
+          });
+        },
+        refreshMap() {
+          map.invalidateSize();
+        },
+        reloadPage() {
+          window.location.reload();
+        },
+        togglePanel() {
+          this.hidePanel = !this.hidePanel
+
+          if (this.hidePanel) {
+            setTimeout(() => {
+              map.invalidateSize();
+            }, 500)
+          }
+
+        },
+        exit() {
+          // Swal.fire('¡Hola, SweetAlert2!', 'Esta es una alerta de ejemplo', 'success')
+          Swal.fire({
+            title: '¿Estás seguro de que deseas salir?',
+            text: 'Los cambios no guardados se perderán.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, salir',
+            cancelButtonText: 'Cancelar',
+          }).then(r => {
+            if (r.isConfirmed) {
+              console.log('salir')
+            }
+          })
+        }
+      },
+      mounted() {
+        // Inicializa el mapa de Leaflet dentro del evento "mounted"
+        map = L.map("map").setView([38.8568, -0.0714], 9);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution: "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors",
+        }).addTo(map);
+
+        this.setCurrentPosition();
+
+
+
+      }
+    }).mount('#app')
+
+
+  </script>
 </body>
 
 </html>
