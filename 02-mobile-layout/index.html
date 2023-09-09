@@ -49,7 +49,6 @@
   <div id="app" v-cloak>
     <div v-show="showModal" class="fixed inset-0 overflow-auto bg-black bg-opacity-50" style="z-index: 600;">
       <div class="modal-content relative w-full mx-auto my-10 p-6 bg-white rounded-lg shadow-lg">
-        <!-- Contenido de la modal -->
         <h2 class="text-2xl font-semibold mb-4">Título de la Modal</h2>
         <div class="overflow-auto">
           <p>Contenido de la modal...</p>
@@ -90,57 +89,62 @@
 
         </div>
 
-        <button @click="showModal=false" class="absolute top-0 right-0 p-4 text-lg"><i
+        <button @click="closeModal()" class="absolute top-0 right-0 p-6 text-lg"><i
             class="fas fa-xmark text-2xl"></i></button>
       </div>
     </div>
-    <div v-show="!showModal" class="bg-blue-100 relative min-h-screen w-full flex flex-col md:max-w-xl md:mx-auto">
+    <div v-show="!showModal" class="bg-gray-100 relative min-h-screen w-full flex flex-col md:max-w-xl md:mx-auto">
       <section ref="map" class="flex-grow relative" id="map">
         <button @click="setCurrentPosition"
-          class="absolute bg-zinc-100 active:bg-zinc-400 duration-200 rounded-full bottom-0 right-0 px-3 py-2 shadow-xl border-blue-300 mx-4 mb-10"
+          class="absolute bg-zinc-100 active:bg-zinc-400 rounded-full bottom-0 right-0 px-3 py-2 shadow-xl  mx-4 mb-10"
           style="z-index: 500;"><i class="fa-solid fa-location-crosshairs text-blue-800 text-2xl"></i>
         </button>
         <!-- <button @click="reloadPage"
-          class="absolute bg-zinc-100 active:bg-zinc-400 duration-200 rounded-full bottom-0 right-0 px-3 py-2 shadow-xl border-blue-300 mx-4"
+          class="absolute bg-zinc-100 active:bg-zinc-400 rounded-full bottom-0 right-0 px-3 py-2 shadow-xl border-blue-300 mx-4"
           style="z-index: 500; bottom: 120px;"><i class="fa-solid fa-arrows-rotate text-blue-800 text-2xl"></i>
         </button> -->
       </section>
-      <section v-show="currentScreen == screens.PENDING"
-        class="bg-gray-100 rounded-t-2xl h-[300px] flex-col  items-center p-2 overflow-scroll">
-        <p class="mr-2">uno</p>
-        <p class="mr-2">dos</p>
-        <p class="mr-2">dos</p>
-        <p class="mr-2">dos</p>
-        <p class="mr-2">dos</p>
-        <p class="mr-2">uno</p>
-        <p class="mr-2">uno</p>
-        <p class="mr-2">dos</p>
-        <p class="mr-2">dos</p>
-        <p class="mr-2">dos</p>
-        <p class="mr-2">dos</p>
-        <p class="mr-2">uno</p>
-        <p class="mr-2">dos</p>
-        <p class="mr-2">dos</p>
-        <p class="mr-2">dos</p>
-        <p class="mr-2">dos</p>
-        <p class="mr-2">uno</p>
-        <p class="mr-2">uno</p>
-        <p class="mr-2">dos</p>
-        <p class="mr-2">dos</p>
-        <p class="mr-2">dos</p>
-        <p class="mr-2">dos</p>
-
+      <section id="pendientes"
+        class="bg-gray-100 shadow-3xl rounded-t-md border-t-4 border-gray-300 flex-col items-center overflow-y-auto transition-all ease-in-out duration-300 h-0"
+        :class="{'h-[400px]': currentScreen == screens.PENDING}">
+        <div ref="panelTitle" class="relative w-full mx-auto p-6 bg-white rounded-lg shadow-lg">
+          <h2  class="text-2xl font-semibold mb-4">Título del panel</h2>
+          <div class="overflow-auto">
+            <p>Contenido de la modal...</p>
+            <p>Contenido de la modal...</p>
+            <p>Contenido de la modal...</p>
+            <p>Contenido de la modal...</p>
+            <p>Contenido de la modal...</p>
+            <p>Contenido de la modal...</p>
+            <p>Contenido de la modal...</p>
+            <p>Contenido de la modal...</p>
+            <p>Contenido de la modal...</p>
+            <p>Contenido de la modal...</p>
+            <p>Contenido de la modal...</p>
+            <p>Contenido de la modal...</p>
+            <p>Contenido de la modal...</p>
+            <p>Contenido de la modal...</p>
+            <p>Contenido de la modal...</p>
+            <p>Contenido de la modal...</p>
+            <p>Contenido de la modal...</p>
+            <p>Contenido de la modal...</p>
+            <p>Contenido de la modal...</p>
+            <p>Contenido de la modal...</p>
+          </div>
+          <button @click="closeModal" class="absolute top-0 right-0 m-6 text-lg">
+            <i class="fas fa-xmark text-2xl"></i>
+          </button>
+        </div>
       </section>
       <section class="bg-gray-50 h-[70px] flex justify-between items-center p-4">
-        <!-- <button @click="togglePanel" -->
         <a @click="setCurrentScreen(screens.PENDING)"
-          class="py-2 flex-col justify-between text-center rounded-xl hover:cursor-pointer">
-          <i class="fas fa-bell text-xl px-5 mb-1 rounded-full animate-bounce"
+          class="py-2 flex-col justify-between text-center rounded-xl hover:cursor-pointer relative">
+          <i class="fas fa-bell text-xl px-5 mb-1 rounded-full"
             :class="{' text-blue-900 bg-blue-200': currentScreen === screens.PENDING}"></i>
+          <span class="absolute top-1 right-4 bg-red-500 text-white rounded-full px-1 text-xs">2</span>
           <p class="text-xs select-none" :class="{' text-blue-900 font-bold': currentScreen === screens.PENDING}">
             Pendientes</p>
         </a>
-        <!-- <button  @click="showModal=!showModal" -->
         <a @click="setCurrentScreen(screens.HISTORY)"
           class="py-2 flex-col justify-center items-center rounded-xl hover:cursor-pointer">
 
@@ -166,16 +170,7 @@
           </p>
         </a>
       </section>
-
-
-
-
     </div>
-
-
-
-
-
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.all.min.js"></script>
@@ -194,21 +189,13 @@
         });
     }
 
-
-
-    var map = null;
-
-    // L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    //   attribution: "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors",
-    // }).addTo(map);
+    let map = null;
 
     const { createApp } = Vue
 
     createApp({
       data() {
         return {
-          message: 'Hello Vue!',
-          hidePanel: true,
           showModal: false,
           screens: {
             PENDING: 'pending',
@@ -220,24 +207,20 @@
         }
       },
       watch: {
-        // showModal(newvalue, oldvalue) {
-        //   // this.refreshMap()
-        // }
         currentScreen(newvalue, oldvalue) {
-
           setTimeout(() => {
             map.invalidateSize();
-          }, 500)
+          }, 400)
 
           if (newvalue == this.screens.PENDING) {
-            // this.togglePanel()
+            this.$refs.panelTitle.scrollIntoView({ block: 'start' });
           }
           else if (newvalue == this.screens.EXIT) {
             this.exit()
           }
-
-
-
+          else if (newvalue == this.screens.HISTORY) {
+            this.showModal = true
+          }
         }
       },
       methods: {
@@ -262,18 +245,11 @@
         reloadPage() {
           window.location.reload();
         },
-        togglePanel() {
-          // this.hidePanel = !this.hidePanel
-
-          // if (this.hidePanel) {
-          //   setTimeout(() => {
-          //     map.invalidateSize();
-          //   }, 500)
-          // }
-
+        closeModal() {
+          this.showModal = false
+          this.currentScreen = null
         },
         exit() {
-          // Swal.fire('¡Hola, SweetAlert2!', 'Esta es una alerta de ejemplo', 'success')
           Swal.fire({
             title: '¿Estás seguro de que deseas salir?',
             text: 'Los cambios no guardados se perderán.',
@@ -294,7 +270,6 @@
         }
       },
       mounted() {
-        // Inicializa el mapa de Leaflet dentro del evento "mounted"
         map = L.map("map").setView([38.8568, -0.0714], 9);
 
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -302,9 +277,6 @@
         }).addTo(map);
 
         this.setCurrentPosition();
-
-
-
       }
     }).mount('#app')
 

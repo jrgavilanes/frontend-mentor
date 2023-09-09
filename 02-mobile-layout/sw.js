@@ -5,8 +5,8 @@ const CACHE_NAME = 'my-pwa-cache-v1';
 
 // Lista de recursos que deseas cachear
 const cacheUrls = [
-    //   '/',
-    // '/index.html',
+    '/',
+    '/index.html',
     //   '/styles.css',
     //   '/app.js',
 
@@ -46,9 +46,9 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
         caches.match(event.request).then((response) => {
             // Si el recurso está en caché, lo servimos desde allí
-            // if (response) {
-            //     return response;
-            // }
+            if (response) {
+                return response;
+            }
 
             // Si no está en caché, lo buscamos en la red
             return fetch(event.request);
